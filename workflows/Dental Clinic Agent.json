@@ -1,0 +1,266 @@
+{
+  "name": "Dental Clinic Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -352,
+        -16
+      ],
+      "id": "9f65c987-38c3-431c-9089-5cf15e8df676",
+      "name": "Telegram Trigger",
+      "webhookId": "71f206b7-11a9-4571-959b-b5087e8e98dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7330a443-9fa3-4597-8b8c-6b16101a0740",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "290fb96a-5f97-4f53-8afc-f52a28d8ed06",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ecb608c-acf0-440e-a021-3bb85d014010",
+              "name": "reply",
+              "value": "=You said: {{$json.message.text}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        240,
+        -16
+      ],
+      "id": "175740ad-d645-41aa-85dd-22db5ca02da5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "=: {{$json.reply}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        -16
+      ],
+      "id": "9cb88969-7f4f-406f-bade-10aed982997c",
+      "name": "Echo",
+      "webhookId": "c1cc9514-5fe8-4c95-8aaf-dca8e41a5426",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "Sorry, I can only understand text messages right now — could you type your question?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        224
+      ],
+      "id": "4cbcd642-478a-4d39-a19d-c6a626dfd721",
+      "name": "Send Non-Text Warning",
+      "webhookId": "1740c2e8-991a-427a-95d0-227a7a303f9d",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "👋 Welcome to Bright Smile Clinic! I can help with hours, pricing, insurance, and booking appointments.      Note: I provide admin help only — for any pain, symptoms, or medication questions, I'll connect you with our staff.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        -336
+      ],
+      "id": "91c2c096-dfa6-4ab6-8747-9583a353df11",
+      "name": "Send a text message",
+      "webhookId": "dfd7828c-ef59-485c-b98d-de798f883ee8",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "922d97ef-4b92-4a0a-9090-1d2a347fa47d",
+              "leftValue": "={{$json.message.text}}",
+              "rightValue": "/start",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        32,
+        -176
+      ],
+      "id": "f8f8130f-7df7-4c73-a6b1-40be3ecb8cb8",
+      "name": "Start"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Non-Text Warning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Echo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c1047dc0-2625-4f44-8fa8-ce8e1d57e77c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9ee3017d531a82cf3425764317c036daec71e98485a34ade15f285bafdc684d5"
+  },
+  "nodeGroups": [],
+  "id": "jY16yZ4rpxjmqdF9",
+  "tags": []
+}
