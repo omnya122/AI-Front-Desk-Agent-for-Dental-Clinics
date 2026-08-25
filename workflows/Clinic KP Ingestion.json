@@ -1,0 +1,254 @@
+{
+  "name": "Clinic KP Ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "124tr5JFA4O629jgXHDelM0EJ9MQklcTj",
+          "mode": "list",
+          "cachedResultName": "Clinic Docs",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/124tr5JFA4O629jgXHDelM0EJ9MQklcTj"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -192
+      ],
+      "id": "be516fb5-1a46-4ec9-9a1b-4bfa9b91809e",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dfcEJtC2pVIauWKe",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{$json.id}}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -208,
+        -16
+      ],
+      "id": "1a58e420-0139-427d-829c-2472cee03f87",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dfcEJtC2pVIauWKe",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "clinic_docs",
+          "mode": "list",
+          "cachedResultName": "clinic_docs"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        -16
+      ],
+      "id": "7141ab98-2808-4764-89ac-a9f4064d6d63",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "WcosPkS5uQmnof7H",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "filename",
+                "value": "={{$('Download file').item.json.name}}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        160
+      ],
+      "id": "a78b14cd-1197-4130-9304-6ba7b0aabfab",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 350,
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        336,
+        272
+      ],
+      "id": "d1ca278b-c9d1-41d4-9197-1aeaba04b99a",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        160
+      ],
+      "id": "206a03a6-4c7f-4625-bebb-4aae8375731c",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": ".txt",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "124tr5JFA4O629jgXHDelM0EJ9MQklcTj",
+            "mode": "list",
+            "cachedResultName": "Clinic Docs",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/124tr5JFA4O629jgXHDelM0EJ9MQklcTj"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -448,
+        -16
+      ],
+      "id": "0fd80127-37a2-4713-b809-168ddbc3a383",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "dfcEJtC2pVIauWKe",
+          "name": "Google Drive account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        []
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e3858285-0f63-481e-af4d-3460592653b6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9ee3017d531a82cf3425764317c036daec71e98485a34ade15f285bafdc684d5"
+  },
+  "nodeGroups": [],
+  "id": "rm2HSfhJAK9iwfJ8",
+  "tags": []
+}
