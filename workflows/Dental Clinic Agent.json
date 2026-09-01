@@ -12,8 +12,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.5,
       "position": [
-        -352,
-        -16
+        -576,
+        -48
       ],
       "id": "9f65c987-38c3-431c-9089-5cf15e8df676",
       "name": "Telegram Trigger",
@@ -53,8 +53,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -176,
-        0
+        -400,
+        -48
       ],
       "id": "290fb96a-5f97-4f53-8afc-f52a28d8ed06",
       "name": "If"
@@ -77,8 +77,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        240,
-        -16
+        -160,
+        -544
       ],
       "id": "175740ad-d645-41aa-85dd-22db5ca02da5",
       "name": "Edit Fields"
@@ -92,8 +92,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        432,
-        -16
+        0,
+        -544
       ],
       "id": "9cb88969-7f4f-406f-bade-10aed982997c",
       "name": "Echo",
@@ -114,34 +114,12 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        48,
-        224
+        -208,
+        32
       ],
       "id": "4cbcd642-478a-4d39-a19d-c6a626dfd721",
       "name": "Send Non-Text Warning",
       "webhookId": "1740c2e8-991a-427a-95d0-227a7a303f9d",
-      "credentials": {
-        "telegramApi": {
-          "id": "VBardozpD85tbRBp",
-          "name": "Telegram account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "={{$json.message.chat.id}}",
-        "text": "👋 Welcome to Bright Smile Clinic! I can help with hours, pricing, insurance, and booking appointments.      Note: I provide admin help only — for any pain, symptoms, or medication questions, I'll connect you with our staff.",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [
-        256,
-        -336
-      ],
-      "id": "91c2c096-dfa6-4ab6-8747-9583a353df11",
-      "name": "Send a text message",
-      "webhookId": "dfd7828c-ef59-485c-b98d-de798f883ee8",
       "credentials": {
         "telegramApi": {
           "id": "VBardozpD85tbRBp",
@@ -177,11 +155,571 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        32,
-        -176
+        -208,
+        -160
       ],
       "id": "f8f8130f-7df7-4c73-a6b1-40be3ecb8cb8",
       "name": "Start"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pricing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Procedure ",
+              "lookupValue": "Root Canal Treatment (per canal)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        -544
+      ],
+      "id": "2eda567f-bdb2-4105-b551-da2a50e35cc5",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1316474974,
+          "mode": "list",
+          "cachedResultName": "Hours",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=1316474974"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Day",
+              "lookupValue": "Thursday"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -544
+      ],
+      "id": "6d6b5942-ddc9-443e-b854-65b377d4dba9",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1785710007,
+          "mode": "list",
+          "cachedResultName": "Insurance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=1785710007"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Provider",
+              "lookupValue": "MedNet Egypt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -560
+      ],
+      "id": "92edcd18-38a7-4ef4-927c-3e3b8976fde9",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "tableName": {
+          "__rl": true,
+          "value": "clinic_docs",
+          "mode": "list",
+          "cachedResultName": "clinic_docs"
+        },
+        "prompt": "what should I do before a filling",
+        "options": {
+          "queryName": "match_clinic_docs"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        -560
+      ],
+      "id": "24ef5d7a-2fa9-4134-bd6f-350d46fdf11b",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "WcosPkS5uQmnof7H",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -384
+      ],
+      "id": "ce4a1793-7b29-489a-8328-03cae3f0e76f",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are the front-desk assistant for Bright Smile Clinic, a dental clinic. You help with:\n   - Pricing and procedure duration questions\n   - Clinic hours\n   - Insurance coverage questions\n   - Appointment availability and booking\n   - General policies (cancellation, location, parking, payment methods)\n\nYou must NEVER provide medical or clinical advice, diagnosis, dosage information, or guidance on symptoms, pain, medication, or treatment decisions. If a question involves any of these, do not attempt to answer it — set clinical_flag to true and use the escalate_to_staff tool instead.\n\n Always use the appropriate tool to answer factual questions rather than guessing. For pricing, use get_price. For hours, look up the clinic's hours data. For policies and instructions, use search_clinic_docs. For availability, use check_availability.\n\nDetect the language the user is writing in (Arabic or English) and reply in the same language.\n\nAlways populate the structured output fields: answer, category, confidence, clinical_flag, and sources."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        16,
+        -80
+      ],
+      "id": "7b1c72f7-8e1f-432a-8d09-b15d44bfc562",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        272
+      ],
+      "id": "bbfea6dd-0a05-4480-b9d1-ef8883f5a8c8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$json.message.chat.id}}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        304
+      ],
+      "id": "7b9d7da5-a300-4280-8c93-e4e57cd90368",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search clinic policy documents for information about pre-op instructions, aftercare, cancellation policy, location, parking, and payment methods.",
+        "tableName": {
+          "__rl": true,
+          "value": "clinic_docs",
+          "mode": "list",
+          "cachedResultName": "clinic_docs"
+        },
+        "options": {
+          "queryName": "match_clinic_docs"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        288
+      ],
+      "id": "b9e5df47-6b81-4315-9fd9-4b191dbe2d22",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "WcosPkS5uQmnof7H",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        864,
+        448
+      ],
+      "id": "657a5ade-d625-40bc-b716-1fc7ec6fda43",
+      "name": "Embeddings Google Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "   Returns the full pricing list for all dental procedures (procedure name, price in EGP, and duration in minutes). Use this to find the price for whatever procedure the user is asking about, matching loosely if their wording doesn't exactly match a procedure name (e.g., \"checkup\" should match \"Checkup & Consultation\").",
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pricing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        272,
+        304
+      ],
+      "id": "480b3d65-d876-44d3-b3bd-3cfc4787d7d6",
+      "name": "get_price",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up the clinic's opening and closing hours for a given day",
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1316474974,
+          "mode": "list",
+          "cachedResultName": "Hours",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=1316474974"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        336
+      ],
+      "id": "b8ea27b9-0a96-4a3c-a245-ece296088311",
+      "name": "get_hours",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up a doctor's specialty and available days by name",
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 591991682,
+          "mode": "list",
+          "cachedResultName": "Doctors",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=591991682"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        720,
+        304
+      ],
+      "id": "f158847f-2f56-4252-b5e9-fe4a78348593",
+      "name": "get_doctors_info",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up insurance coverage details for a given provider",
+        "documentId": {
+          "__rl": true,
+          "value": "1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1785710007,
+          "mode": "list",
+          "cachedResultName": "Insurance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EiCN2PYfSJ3SM1LMDAMyV4bFtqfWCfOZqM8uckrLMzc/edit#gid=1785710007"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        304
+      ],
+      "id": "c6222d2a-8890-42e0-bd69-9bb4202bbe95",
+      "name": "get_insurance_coverage",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Book a confirmed appointment slot into the clinic calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "33717edb75defda2a4151e84e837511ed9d2857341c9ea21ebc78dab52f201bf@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1152,
+        272
+      ],
+      "id": "2aa5d98c-d4a2-4dc5-a572-91ef94686e79",
+      "name": "book_appointment",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NzPOPrQtjw9hAM7V",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Check available appointment slots on a given day",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "33717edb75defda2a4151e84e837511ed9d2857341c9ea21ebc78dab52f201bf@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        176
+      ],
+      "id": "829f9ffb-7e25-4fa2-942b-239b7ed0c919",
+      "name": "check_availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NzPOPrQtjw9hAM7V",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n     \"answer\": \"string\",\n     \"category\": \"string\",\n     \"confidence\": \"number\",\n     \"clinical_flag\": \"boolean\",\n     \"sources\": [\"string\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        32
+      ],
+      "id": "cbf0c765-11de-47de-bdaa-22727b8495cf",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "👋 Welcome to Bright Smile Clinic! I can help with hours, pricing, insurance, and booking appointments.      Note: I provide admin help only — for any pain, symptoms, or medication questions, I'll connect you with our staff.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        -256
+      ],
+      "id": "91c2c096-dfa6-4ab6-8747-9583a353df11",
+      "name": "Welcome Message",
+      "webhookId": "dfd7828c-ef59-485c-b98d-de798f883ee8",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Escalate the customer to human clinic staff when the request involves symptoms, pain, medication, diagnosis, medical advice, treatment decisions, urgent clinical concerns, or booking changes and cancellations that require staff assistance.",
+        "chatId": "2090632591",
+        "text": "=Escalation triggered: {{ $fromAI('reason', 'A brief explanation of why this question is being escalated to staff', 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        128
+      ],
+      "id": "5ef64fc9-8a20-47dd-9a4a-03d629cb954e",
+      "name": "escalate_to_staff",
+      "webhookId": "508c7b15-be82-4bcb-bb30-6029555767b5",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output.answer }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        496,
+        -160
+      ],
+      "id": "ddd24a20-f066-4c5f-94b9-868bc022c285",
+      "name": "Send a text message",
+      "webhookId": "ab703edb-b9a2-4876-82ab-ba34d59d813b",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -226,23 +764,187 @@
         ]
       ]
     },
-    "Send a text message": {
-      "main": [
-        []
-      ]
-    },
     "Start": {
       "main": [
         [
           {
-            "node": "Send a text message",
+            "node": "Welcome Message",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Edit Fields",
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        []
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_price": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_hours": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_doctors_info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_insurance_coverage": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "book_appointment": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome Message": {
+      "main": [
+        []
+      ]
+    },
+    "escalate_to_staff": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           }
@@ -255,7 +957,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "c1047dc0-2625-4f44-8fa8-ce8e1d57e77c",
+  "versionId": "5030cb9b-df00-423e-bfc2-af1ac704f550",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "9ee3017d531a82cf3425764317c036daec71e98485a34ade15f285bafdc684d5"
