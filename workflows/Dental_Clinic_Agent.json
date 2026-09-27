@@ -1,0 +1,1661 @@
+{
+  "name": "Dental Clinic Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -1136,
+        -96
+      ],
+      "id": "9f65c987-38c3-431c-9089-5cf15e8df676",
+      "name": "Telegram Trigger",
+      "webhookId": "71f206b7-11a9-4571-959b-b5087e8e98dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ecb608c-acf0-440e-a021-3bb85d014010",
+              "name": "reply",
+              "value": "=You said: {{$json.message.text}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -160,
+        -544
+      ],
+      "id": "175740ad-d645-41aa-85dd-22db5ca02da5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "=: {{$json.reply}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -544
+      ],
+      "id": "9cb88969-7f4f-406f-bade-10aed982997c",
+      "name": "Echo",
+      "webhookId": "c1cc9514-5fe8-4c95-8aaf-dca8e41a5426",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "Sorry, I can only understand text messages right now — could you type your question?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -928,
+        80
+      ],
+      "id": "4cbcd642-478a-4d39-a19d-c6a626dfd721",
+      "name": "Send Non-Text Warning",
+      "webhookId": "1740c2e8-991a-427a-95d0-227a7a303f9d",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pricing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Procedure ",
+              "lookupValue": "Root Canal Treatment (per canal)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        -544
+      ],
+      "id": "2eda567f-bdb2-4105-b551-da2a50e35cc5",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1316474974,
+          "mode": "list",
+          "cachedResultName": "Hours",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1316474974"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Day",
+              "lookupValue": "Thursday"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -544
+      ],
+      "id": "6d6b5942-ddc9-443e-b854-65b377d4dba9",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1785710007,
+          "mode": "list",
+          "cachedResultName": "Insurance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1785710007"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Provider",
+              "lookupValue": "MedNet Egypt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -560
+      ],
+      "id": "92edcd18-38a7-4ef4-927c-3e3b8976fde9",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "tableName": {
+          "__rl": true,
+          "value": "clinic_docs",
+          "mode": "list",
+          "cachedResultName": "clinic_docs"
+        },
+        "prompt": "what should I do before a filling",
+        "options": {
+          "queryName": "match_clinic_docs"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        -560
+      ],
+      "id": "24ef5d7a-2fa9-4134-bd6f-350d46fdf11b",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "WcosPkS5uQmnof7H",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -384
+      ],
+      "id": "ce4a1793-7b29-489a-8328-03cae3f0e76f",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are the front-desk assistant for Bright Smile Clinic, a dental clinic. You help with:\n   - Pricing and procedure duration questions\n   - Clinic hours\n   - Insurance coverage questions\n   - Appointment availability and booking\n   - General policies (cancellation, location, parking, payment methods)\n\nYou must NEVER provide medical or clinical advice, diagnosis, dosage information, or guidance on symptoms, pain, medication, or treatment decisions. If a question involves any of these, do not attempt to answer it — set clinical_flag to true and use the escalate_to_staff tool instead.\n\n Always use the appropriate tool to answer factual questions rather than guessing. For pricing, use get_price. For hours, look up the clinic's hours data. For policies and instructions, use search_clinic_docs. For availability, use check_availability.\n\nDetect the language the user is writing in (Arabic or English) and reply in the same language.\n\nAlways populate the structured output fields: answer, category, confidence, clinical_flag, and sources."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -272,
+        288
+      ],
+      "id": "7b1c72f7-8e1f-432a-8d09-b15d44bfc562",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        448
+      ],
+      "id": "bbfea6dd-0a05-4480-b9d1-ef8883f5a8c8",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$json.message.chat.id}}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -448,
+        608
+      ],
+      "id": "7b9d7da5-a300-4280-8c93-e4e57cd90368",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search clinic policy documents for information about pre-op instructions, aftercare, cancellation policy, location, parking, and payment methods.",
+        "tableName": {
+          "__rl": true,
+          "value": "clinic_docs",
+          "mode": "list",
+          "cachedResultName": "clinic_docs"
+        },
+        "options": {
+          "queryName": "match_clinic_docs"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        624
+      ],
+      "id": "b9e5df47-6b81-4315-9fd9-4b191dbe2d22",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "WcosPkS5uQmnof7H",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        224,
+        800
+      ],
+      "id": "657a5ade-d625-40bc-b716-1fc7ec6fda43",
+      "name": "Embeddings Google Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zmDYollmdVX4mYdM",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "   Returns the full pricing list for all dental procedures (procedure name, price in EGP, and duration in minutes). Use this to find the price for whatever procedure the user is asking about, matching loosely if their wording doesn't exactly match a procedure name (e.g., \"checkup\" should match \"Checkup & Consultation\").",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Pricing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        1152
+      ],
+      "id": "480b3d65-d876-44d3-b3bd-3cfc4787d7d6",
+      "name": "get_price",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up the clinic's opening and closing hours for a given day",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1316474974,
+          "mode": "list",
+          "cachedResultName": "Hours",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1316474974"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        608
+      ],
+      "id": "b8ea27b9-0a96-4a3c-a245-ece296088311",
+      "name": "get_hours",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up a doctor's specialty and available days by name",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 591991682,
+          "mode": "list",
+          "cachedResultName": "Doctors",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=591991682"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        784
+      ],
+      "id": "f158847f-2f56-4252-b5e9-fe4a78348593",
+      "name": "get_doctors_info",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Look up insurance coverage details for a given provider",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1785710007,
+          "mode": "list",
+          "cachedResultName": "Insurance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1785710007"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        944
+      ],
+      "id": "c6222d2a-8890-42e0-bd69-9bb4202bbe95",
+      "name": "get_insurance_coverage",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Book a confirmed appointment slot into the clinic calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        608
+      ],
+      "id": "2aa5d98c-d4a2-4dc5-a572-91ef94686e79",
+      "name": "book_appointment",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NzPOPrQtjw9hAM7V",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Check available appointment slots on a given day",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_CALENDAR_ID@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        96,
+        608
+      ],
+      "id": "829f9ffb-7e25-4fa2-942b-239b7ed0c919",
+      "name": "check_availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "NzPOPrQtjw9hAM7V",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n     \"answer\": \"string\",\n     \"category\": \"string\",\n     \"confidence\": \"number\",\n     \"clinical_flag\": \"boolean\",\n     \"sources\": [\"string\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        624
+      ],
+      "id": "cbf0c765-11de-47de-bdaa-22727b8495cf",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "👋 Welcome to Bright Smile Clinic! I can help with hours, pricing, insurance, and booking appointments.      Note: I provide admin help only — for any pain, symptoms, or medication questions, I'll connect you with our staff.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        -368
+      ],
+      "id": "91c2c096-dfa6-4ab6-8747-9583a353df11",
+      "name": "Welcome Message",
+      "webhookId": "dfd7828c-ef59-485c-b98d-de798f883ee8",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Escalate the customer to human clinic staff when the request involves symptoms, pain, medication, diagnosis, medical advice, treatment decisions, urgent clinical concerns, or booking changes and cancellations that require staff assistance.",
+        "chatId": "YOUR_TELEGRAM_ADMIN_CHAT_ID",
+        "text": "=Escalation triggered: {{ $fromAI('reason', 'A brief explanation of why this question is being escalated to staff', 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        608
+      ],
+      "id": "5ef64fc9-8a20-47dd-9a4a-03d629cb954e",
+      "name": "escalate_to_staff",
+      "webhookId": "508c7b15-be82-4bcb-bb30-6029555767b5",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_ADMIN_CHAT_ID",
+        "text": "=🚨 Escalation Triggered: {{ $('Telegram Trigger').first().json.message.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        -256
+      ],
+      "id": "b7c1831c-54bb-4c56-9ab4-fa2619fc83b5",
+      "name": "Notify Staff",
+      "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_ADMIN_CHAT_ID",
+        "text": "=🚨 Escalation Triggered: {{ $('Telegram Trigger').first().json.message.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        64
+      ],
+      "id": "1980fd3e-9986-4ecc-a097-1bc3ff531060",
+      "name": "Notify Staff1",
+      "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "This sounds like something our staff should look at directly — I've forwarded your question to our team and they'll follow up with you shortly. If this is urgent, please call the clinic directly.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        64
+      ],
+      "id": "415220ea-db8f-4f28-8c42-13af82de1723",
+      "name": "Reply User1",
+      "webhookId": "1371df54-0ca8-49b2-bdf8-0e507fb6dd26",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_ADMIN_CHAT_ID",
+        "text": "=🚨 Escalation Triggered: {{ $('Telegram Trigger').first().json.message.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        176
+      ],
+      "id": "d36979bc-01ed-4e8c-a8ce-a580d1778e3d",
+      "name": "Notify Staff2",
+      "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "This sounds like something our staff should look at directly — I've forwarded your question to our team and they'll follow up with you shortly. If this is urgent, please call the clinic directly.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        176
+      ],
+      "id": "2b0d6f55-be54-47a7-9c8d-e0c9e4e193d3",
+      "name": "Reply User2",
+      "webhookId": "1371df54-0ca8-49b2-bdf8-0e507fb6dd26",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1837969472,
+          "mode": "list",
+          "cachedResultName": "Escalation Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now }}",
+            "Chat ID": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+            "Question": "={{ $('Telegram Trigger').first().json.message.text }}",
+            "Trigger Layer": "emergency",
+            "Category": "emergency"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chat ID",
+              "displayName": "Chat ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Question",
+              "displayName": "Question",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trigger Layer",
+              "displayName": "Trigger Layer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        -256
+      ],
+      "id": "5b41fa59-8825-44ab-bced-fd3d3f688f6d",
+      "name": "Append Row - Emergency",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1837969472,
+          "mode": "list",
+          "cachedResultName": "Escalation Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now }}",
+            "Chat ID": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+            "Question": "={{ $('Telegram Trigger').first().json.message.text }}",
+            "Category": "keyword_prefilter",
+            "Trigger Layer": "keyword_prefilter"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chat ID",
+              "displayName": "Chat ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Question",
+              "displayName": "Question",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trigger Layer",
+              "displayName": "Trigger Layer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        64
+      ],
+      "id": "065a2d4c-136f-4aba-a7c2-a0986c9ee7de",
+      "name": "Append Row - Keyword",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Clinic Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1837969472,
+          "mode": "list",
+          "cachedResultName": "Escalation Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now }}",
+            "Chat ID": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+            "Question": "={{ $('Telegram Trigger').first().json.message.text }}",
+            "Category": "output_check",
+            "Trigger Layer": "output_check"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chat ID",
+              "displayName": "Chat ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Question",
+              "displayName": "Question",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trigger Layer",
+              "displayName": "Trigger Layer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        176
+      ],
+      "id": "597008e7-2730-4ffb-84cd-b7b0d9e28aed",
+      "name": "Append Row - Output Check",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rf75cSECdWGmtbZX",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "⚠️ This may be a dental emergency. Please call the clinic immediately or go to the nearest emergency room if you're having trouble breathing or swallowing, or bleeding won't stop.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        -256
+      ],
+      "id": "ee03f263-bc80-4885-8ae4-adddc8f61cd8",
+      "name": "Send Emergency Warning",
+      "webhookId": "8bbd5bd7-65b7-40d2-ba62-9f099fa8683a",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c8c3215d-0c28-486b-b40f-391340437aa4",
+              "leftValue": "={{ /\\b(pain|hurts?|hurting|swelling|swollen|bleeding|bleed|abscess|fever|infection|antibiotic|ibuprofen|amoxicillin|paracetamol|medication|dosage|should i take|is it normal that|is it ok that|throbbing)\\b/i.test($json.message.text || '') }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -544,
+        96
+      ],
+      "id": "dee9c3d2-9e8d-4b00-bd77-97665a5abbfd",
+      "name": "Clinical Keyword Check"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output.answer }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        368
+      ],
+      "id": "ddd24a20-f066-4c5f-94b9-868bc022c285",
+      "name": "Agent Reply",
+      "webhookId": "ab703edb-b9a2-4876-82ab-ba34d59d813b",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e6794279-b644-4212-88a4-afb5bf6aee93",
+              "leftValue": "={{ /\\b(mg|milligram|dosage|take \\d+|twice daily|three times a day|ibuprofen|amoxicillin|antibiotic|you have (an|a)|this (is|sounds like) (an? )?(infection|abscess|emergency)|diagnos)\\b/i.test($json.output.answer) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        96,
+        288
+      ],
+      "id": "5e7e4483-1507-4131-90d0-7a6b69dc24fd",
+      "name": "Output Safety Check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7330a443-9fa3-4597-8b8c-6b16101a0740",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -928,
+        -96
+      ],
+      "id": "290fb96a-5f97-4f53-8afc-f52a28d8ed06",
+      "name": "is_text"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "922d97ef-4b92-4a0a-9090-1d2a347fa47d",
+              "leftValue": "={{$json.message.text}}",
+              "rightValue": "/start",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -736,
+        -112
+      ],
+      "id": "f8f8130f-7df7-4c73-a6b1-40be3ecb8cb8",
+      "name": "is_start"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a23feda9-d90c-4ef5-b6b1-241b9df88170",
+              "leftValue": "= {{ /\\b(can.t breathe|cannot breathe|difficulty breathing|difficulty swallowing|can.t swallow|face is swelling|facial swelling|won.t stop bleeding|uncontrolled bleeding|severe trauma|knocked out|hit my (face|jaw|mouth) hard)\\b/i.test($('Telegram Trigger').first().json.message.text) }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -384,
+        -576
+      ],
+      "id": "042d14f7-a748-4585-838d-db0cae73da6a",
+      "name": "Emergency Check"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a23feda9-d90c-4ef5-b6b1-241b9df88170",
+              "leftValue": "={{ /(?:can.?t breathe|cannot breathe|difficulty breathing|difficulty swallowing|can.?t swallow|face is swelling|facial swelling|won.?t stop bleeding|uncontrolled bleeding|severe trauma|knocked out|hit my (?:face|jaw|mouth) hard)/i.test($json.message.text || '') }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -512,
+        -160
+      ],
+      "id": "5ca50143-feb5-4217-8a1d-b8b29de3a1e1",
+      "name": "Emergency Check1"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "is_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Echo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        []
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_price": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_hours": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_doctors_info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_insurance_coverage": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "book_appointment": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Welcome Message": {
+      "main": [
+        []
+      ]
+    },
+    "escalate_to_staff": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Output Safety Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Staff": {
+      "main": [
+        []
+      ]
+    },
+    "Append Row - Emergency": {
+      "main": [
+        [
+          {
+            "node": "Notify Staff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Emergency Warning": {
+      "main": [
+        [
+          {
+            "node": "Append Row - Emergency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clinical Keyword Check": {
+      "main": [
+        [
+          {
+            "node": "Append Row - Keyword",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Row - Keyword": {
+      "main": [
+        [
+          {
+            "node": "Notify Staff1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Staff1": {
+      "main": [
+        [
+          {
+            "node": "Reply User1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Safety Check": {
+      "main": [
+        [
+          {
+            "node": "Append Row - Output Check",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Row - Output Check": {
+      "main": [
+        [
+          {
+            "node": "Notify Staff2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Staff2": {
+      "main": [
+        [
+          {
+            "node": "Reply User2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_text": {
+      "main": [
+        [
+          {
+            "node": "is_start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Non-Text Warning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_start": {
+      "main": [
+        [
+          {
+            "node": "Welcome Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Emergency Check1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Emergency Check": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Emergency Check1": {
+      "main": [
+        [
+          {
+            "node": "Send Emergency Warning",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clinical Keyword Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 1,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

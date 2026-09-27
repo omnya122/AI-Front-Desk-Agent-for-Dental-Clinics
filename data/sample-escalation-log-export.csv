@@ -1,0 +1,6 @@
+Timestamp,Chat ID,Question,Category,Trigger Layer
+2026-09-01T04:50:50.780+03:00,8909527827,I have a bleeding,,
+2026-09-01T20:41:55.704+03:00,8909527827,I have difficulty swallowing,emergency,emergency
+2026-09-01T20:47:45.081+03:00,8909527827,I have difficulty swallowing,emergency,emergency
+2026-09-01T20:48:42.732+03:00,8909527827,My teeth is hurting,keyword_prefilter,keyword_prefilter
+2026-09-01T20:56:45.885+03:00,8909527827,How much should i take from the medicine,keyword_prefilter,keyword_prefilter

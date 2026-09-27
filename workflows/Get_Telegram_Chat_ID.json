@@ -1,0 +1,39 @@
+{
+  "name": "Get Telegram Chat ID",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d91b5db6-e2fc-424e-abc0-a78456079302",
+      "name": "Telegram Trigger",
+      "webhookId": "018a728d-288c-4c33-9fb8-73ac8af316e6",
+      "credentials": {
+        "telegramApi": {
+          "id": "VBardozpD85tbRBp",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

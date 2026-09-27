@@ -13,10 +13,10 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "124tr5JFA4O629jgXHDelM0EJ9MQklcTj",
+          "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID",
           "mode": "list",
           "cachedResultName": "Clinic Docs",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/124tr5JFA4O629jgXHDelM0EJ9MQklcTj"
+          "cachedResultUrl": "https://drive.google.com/drive/folders/YOUR_GOOGLE_DRIVE_FOLDER_ID"
         },
         "event": "fileUpdated",
         "options": {}
@@ -151,10 +151,10 @@
         "filter": {
           "folderId": {
             "__rl": true,
-            "value": "124tr5JFA4O629jgXHDelM0EJ9MQklcTj",
+            "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID",
             "mode": "list",
             "cachedResultName": "Clinic Docs",
-            "cachedResultUrl": "https://drive.google.com/drive/folders/124tr5JFA4O629jgXHDelM0EJ9MQklcTj"
+            "cachedResultUrl": "https://drive.google.com/drive/folders/YOUR_GOOGLE_DRIVE_FOLDER_ID"
           }
         },
         "options": {}
@@ -246,7 +246,7 @@
   "versionId": "e3858285-0f63-481e-af4d-3460592653b6",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "9ee3017d531a82cf3425764317c036daec71e98485a34ade15f285bafdc684d5"
+    "instanceId": "YOUR_N8N_INSTANCE_ID"
   },
   "nodeGroups": [],
   "id": "rm2HSfhJAK9iwfJ8",
