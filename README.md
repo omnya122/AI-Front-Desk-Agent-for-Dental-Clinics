@@ -71,15 +71,14 @@ Each layer feeds the same escalation chain: log the event → notify staff → s
 
 ---
 
-## Cut for v1 / planned
+## planned
 
-- Appointment booking (Google Calendar integration, inline-keyboard slot selection, idempotency handling)
+- Appointment booking & Slot Finder (Google Calendar integration)
 - Reschedule / cancel flows
-- Payments
-- Multi-clinic support
-- Staff dashboard
-- Per-user rate limiting
-- Workflow-level error handling / retry policies
+- Human Handoff:	Detects "I want to talk to someone" and passes the chat to a staff member
+- Loop Breaker (Frustration Escalation)
+- Safety Net: A second safety layer that judges whether a message needs escalation when the keyword gate misses it
+
 
 ---
 
