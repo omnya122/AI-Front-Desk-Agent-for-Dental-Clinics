@@ -35,7 +35,7 @@ code-first LangGraph application. All data is made up; this is a portfolio proje
 | Average cost per message | about $0.00028 |
 
 The prompt was tuned after the first run on the original 40 questions. The 14 `holdout` questions in
-`evals/questions.jsonl` were added afterwards to check generalisation: *add your holdout numbers here*.
+`evals/questions.jsonl` were added afterwards to check generalisation
 
 ## Project layout
 
@@ -83,11 +83,6 @@ the graph testable and lets `evals/run_eval.py` run the real graph without a bot
 | `thread_id = chat_id` with the Postgres checkpointer | Conversation memory and booking progress survive restarts. Model context is windowed with `trim_messages`. |
 | History repair node | If a crash leaves a tool call without a result, the next turn would be rejected by the Gemini API; `prepare_agent` strips dangling calls instead of wiping the user's memory. |
 
-### What changed vs the n8n version
-
-* Fixed: `callback_query` crashed the old flow (it read `message.text`); booking was referenced in the prompt but never built; the output regex missed `diagnosis` and flagged "you have a booking"; staff alerts carried no patient identifier; the re-index flow re-embedded everything and never removed stale chunks; chat IDs were hard-coded.
-* Added: Arabic clinical/emergency detection, `update_id` dedup, per-chat rate limit, typing indicator, per-turn cost/latency log, error handler (apology + staff alert), idempotent booking, hash-based incremental re-indexing, eval harness, unit tests.
-
 ## Setup
 
 Requires Python 3.11+ and Docker (for Postgres + pgvector).
@@ -111,25 +106,3 @@ Any Postgres with pgvector works (e.g. Supabase) – set `DATABASE_URL`.
 pytest                                  # deterministic gates, no network
 python -m evals.run_eval --delay 4      # 25 admin / 10 clinical / 5 ambiguous through the real graph
 ```
-
-Reports: % admin answered autonomously, % clinical correctly refused (target 100% – report the real number and
-discuss any miss), which layer caught each clinical case, median latency, cost per message. Ambiguous questions
-are for manual review; the failure condition there is a clinical answer, not an escalation.
-Run it yourself before quoting numbers on a CV.
-
-## Known limitations / planned
-
-* Bookings live in Postgres; a Google Calendar adapter would replace `clinic/booking.py` (`free_slots`, `create_booking`).
-* Patient name/phone are stored in plain text in `bookings` and in the LangGraph checkpoint. A real deployment needs encryption, retention limits and consent wording.
-* Reschedule/cancel go to staff. Payments, multi-clinic, staff dashboard: not built.
-* The keyword gate over-triggers by design (e.g. "will it hurt?" goes to staff). Tune with the eval set, never towards fewer clinical catches.
-* Arabic gates are a starting list (MSA + Egyptian dialect), not a full morphological analyser.
-* `RETRIEVAL_MIN_SIMILARITY` should be calibrated against your embedding model.
-
-## CV text
-
-**AI Front-Desk Agent for Dental Clinics** — LangGraph, Python, Telegram Bot API, Postgres/pgvector, Gemini *(personal project, fictional data)*
-- Built a stateful LangGraph agent behind a Telegram bot that answers pricing, hours, insurance and policy questions by combining Postgres lookups for structured facts with pgvector RAG over clinic documents, resolving [X]% of a 25-question admin test set without staff involvement.
-- Designed a layered clinical safety gate – deterministic bilingual (EN/AR) pre-filter and emergency tier, structured agent-level flags, and a post-generation output guard that replaces any blocked answer with a canned staff handover – which escalated [Y]% of a 10-question clinical set.
-- Implemented appointment booking as a checkpointed state machine with inline-keyboard slot selection, server-side slot re-validation and a unique-constraint-backed idempotent confirm, so double taps and stale buttons cannot double-book.
-- Added production-style reliability: Postgres-backed conversation memory, Telegram `update_id` dedup, per-user rate limiting, history repair after failures, staff alerts, and per-turn token/cost/latency logging ([$Z] per message, [T]s median latency).
