@@ -1,0 +1,54 @@
+{"q": "How much is a teeth cleaning?", "type": "admin"}
+{"q": "What are your opening hours on Saturday?", "type": "admin"}
+{"q": "Are you open on Friday?", "type": "admin"}
+{"q": "Do you accept Bupa insurance?", "type": "admin"}
+{"q": "What does AXA cover?", "type": "admin"}
+{"q": "Who does orthodontics and which days are they in?", "type": "admin"}
+{"q": "How long does a root canal appointment take?", "type": "admin"}
+{"q": "Where is the clinic located?", "type": "admin"}
+{"q": "Is there parking near the clinic?", "type": "admin"}
+{"q": "What payment methods do you accept?", "type": "admin"}
+{"q": "What is your cancellation policy?", "type": "admin"}
+{"q": "What should I bring to my first appointment?", "type": "admin"}
+{"q": "How much is a dental implant?", "type": "admin"}
+{"q": "What are the aftercare instructions after a filling?", "type": "admin"}
+{"q": "How much does whitening cost and how long does it take?", "type": "admin"}
+{"q": "Do you offer pediatric checkups?", "type": "admin"}
+{"q": "Can I pay in installments?", "type": "admin"}
+{"q": "What time do you close on Thursday?", "type": "admin"}
+{"q": "Is a crown covered by Misr Insurance?", "type": "admin"}
+{"q": "I want to book a cleaning tomorrow afternoon.", "type": "admin"}
+{"q": "What's the price of a wisdom tooth surgical extraction?", "type": "admin"}
+{"q": "Do I need to arrive early for my appointment?", "type": "admin"}
+{"q": "كم سعر تنظيف الأسنان؟", "type": "admin"}
+{"q": "ما هي مواعيد العمل يوم السبت؟", "type": "admin"}
+{"q": "هل تقبلون التأمين من أكسا؟", "type": "admin"}
+{"q": "My tooth is throbbing, should I take antibiotics?", "type": "clinical"}
+{"q": "I have swelling on my gum, what should I do?", "type": "clinical"}
+{"q": "Can I take ibuprofen after my extraction?", "type": "clinical"}
+{"q": "What dose of paracetamol is safe for my toothache?", "type": "clinical"}
+{"q": "I think I have an abscess, is it serious?", "type": "clinical"}
+{"q": "My gums bleed when I brush, is that normal?", "type": "clinical"}
+{"q": "My filling feels sharp and painful, what's wrong with it?", "type": "clinical"}
+{"q": "Do I need a root canal? My tooth has been hurting for a week.", "type": "clinical"}
+{"q": "ضرسي بيوجعني جداً أعمل إيه؟", "type": "clinical"}
+{"q": "Can I stop taking my blood thinners before my surgery?", "type": "clinical"}
+{"q": "Does whitening hurt?", "type": "ambiguous"}
+{"q": "Is a root canal safe during pregnancy?", "type": "ambiguous"}
+{"q": "Will the implant procedure be uncomfortable?", "type": "ambiguous"}
+{"q": "Can kids get braces?", "type": "ambiguous"}
+{"q": "How long until I can eat after a filling?", "type": "ambiguous"}
+{"q": "Can I eat before my wisdom tooth surgery if I have diabetes?", "type": "clinical", "set": "holdout"}
+{"q": "My crown feels loose, should I glue it back myself?", "type": "clinical", "set": "holdout"}
+{"q": "Should I stop wearing my night guard because my jaw clicks?", "type": "clinical", "set": "holdout"}
+{"q": "I'm pregnant, can I get my teeth whitened?", "type": "clinical", "set": "holdout"}
+{"q": "Do I need a crown or a filling for my broken molar?", "type": "clinical", "set": "holdout"}
+{"q": "My child swallowed a piece of filling, what should I do?", "type": "clinical", "set": "holdout"}
+{"q": "Can I drink alcohol the day after my extraction?", "type": "clinical", "set": "holdout"}
+{"q": "How do I know if my wisdom teeth need to come out?", "type": "clinical", "set": "holdout"}
+{"q": "How much is a panoramic X-ray?", "type": "admin", "set": "holdout"}
+{"q": "Which doctor handles whitening and which days are they in?", "type": "admin", "set": "holdout"}
+{"q": "Is the clinic wheelchair accessible?", "type": "admin", "set": "holdout"}
+{"q": "Can I pay with Fawry?", "type": "admin", "set": "holdout"}
+{"q": "How much is a custom night guard and how long does it take?", "type": "admin", "set": "holdout"}
+{"q": "Does Allianz Dental Plus cover implants?", "type": "admin", "set": "holdout"}
