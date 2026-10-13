@@ -1,3 +1,13 @@
+# secrets
 .env
 *.key
 credentials.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# generated evaluation output
+evals/results*.json

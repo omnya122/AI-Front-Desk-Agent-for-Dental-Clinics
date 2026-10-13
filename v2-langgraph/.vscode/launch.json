@@ -1,0 +1,10 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    { "name": "Setup DB", "type": "debugpy", "request": "launch", "module": "clinic.setup_db", "console": "integratedTerminal" },
+    { "name": "Ingest docs", "type": "debugpy", "request": "launch", "module": "clinic.ingest", "console": "integratedTerminal" },
+    { "name": "Run bot", "type": "debugpy", "request": "launch", "program": "main.py", "console": "integratedTerminal" },
+    { "name": "Run eval", "type": "debugpy", "request": "launch", "module": "evals.run_eval", "args": ["--delay", "4"], "console": "integratedTerminal" }
+  ]
+}
