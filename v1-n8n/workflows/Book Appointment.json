@@ -1,0 +1,437 @@
+{
+  "name": "Book Appointment",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "mode"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "duration_min"
+            },
+            {
+              "name": "summary"
+            },
+            {
+              "name": "description"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1440,
+        304
+      ],
+      "id": "602104b7-dbb5-4fa3-9eec-65539e539a86",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Opening hours in minutes from midnight, keyed by weekday (Sun=0 ... Sat=6). Keep in sync with the Hours sheet.\nconst HOURS = { 0: [600, 1200], 1: [600, 1200], 2: [600, 1200], 3: [600, 1200], 4: [600, 1080], 5: null, 6: [600, 1200] };\nconst TZ = 'Africa/Cairo';\nconst inp = $input.first().json;\nconst pad = (n) => String(n).padStart(2, '0');\nconst fmt = (min) => `${pad(Math.floor(min / 60))}:${pad(min % 60)}`;\nconst bad = (reason) => [{ json: { valid: false, reason, mode: inp.mode } }];\n\n// Phone check (booking only): Egyptian mobile = 11 digits starting 010/011/012/015\nif (inp.mode === 'book') {\n  const pm = /phone\\s*:\\s*([^;]+)/i.exec(String(inp.description || ''));\n  let p = (pm ? pm[1] : '')\n    .replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))\n    .replace(/[^\\d+]/g, '');\n  if (p.startsWith('+20')) p = '0' + p.slice(3);\n  else if (p.startsWith('0020')) p = '0' + p.slice(4);\n  else if (p.startsWith('20') && p.length === 12) p = '0' + p.slice(2);\n  if (!/^01[0125]\\d{8}$/.test(p)) {\n    return bad('Invalid phone number. Egyptian mobile numbers have 11 digits and start with 010, 011, 012 or 015. Ask the patient to re-enter the phone number.');\n  }\n}\n\nconst m = /^(\\d{4})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})/.exec(String(inp.start || ''));\nif (!m) return bad('The start time must look like 2026-10-17T14:00 (Cairo local time).');\nconst [Y, Mo, D, h, mi] = m.slice(1).map(Number);\nconst dur = Number(inp.duration_min) > 0 ? Number(inp.duration_min) : 30;\n\n// Cairo wall-clock parts for a UTC timestamp (handles daylight saving)\nconst wall = (ms) => {\n  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {\n    timeZone: TZ, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',\n  }).formatToParts(new Date(ms)).map((x) => [x.type, x.value]));\n  return [+p.year, +p.month, +p.day, +p.hour, +p.minute];\n};\n\n// Interpret the given date/time as Cairo local time and find the matching UTC offset (+2 or +3)\nlet startMs = null, off = null;\nfor (const o of [2, 3]) {\n  const ms = Date.UTC(Y, Mo - 1, D, h - o, mi);\n  const w = wall(ms);\n  if (w[0] === Y && w[1] === Mo && w[2] === D && w[3] === h && w[4] === mi) { startMs = ms; off = o; break; }\n}\nif (startMs === null) return bad('That is not a valid time.');\nconst endMs = startMs + dur * 60000;\n\nconst hrs = HOURS[new Date(Date.UTC(Y, Mo - 1, D)).getUTCDay()];\nif (!hrs) return bad('The clinic is closed on that day.');\nconst startMin = h * 60 + mi;\nif (startMin < hrs[0] || startMin + dur > hrs[1]) {\n  return bad(`Outside opening hours. That day the clinic is open ${fmt(hrs[0])} to ${fmt(hrs[1])}, and the whole appointment (${dur} min) must fit inside.`);\n}\nif (startMs < Date.now() + 30 * 60000) return bad('That time is in the past or too soon.');\n\nconst iso = (w) => `${w[0]}-${pad(w[1])}-${pad(w[2])}T${pad(w[3])}:${pad(w[4])}:00+${pad(off)}:00`;\nreturn [{ json: {\n  valid: true,\n  mode: inp.mode,\n  startISO: iso([Y, Mo, D, h, mi]),\n  endISO: iso(wall(endMs)),\n  summary: inp.summary || 'Appointment',\n  description: inp.description || '',\n  localLabel: `${Y}-${pad(Mo)}-${pad(D)} ${pad(h)}:${pad(mi)}`,\n} }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        304
+      ],
+      "id": "226a06c9-145d-4655-bfd9-eb26f359ab5d",
+      "name": "validate"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5f46d4ca-c18e-4cf8-a28a-4af21f60da31",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        304
+      ],
+      "id": "cbb8a17a-0609-413a-99f8-990fc4de1f12",
+      "name": "valid?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d9b91ca2-4517-48e1-b160-a54a3c6bddf0",
+              "name": "status",
+              "value": "INVALID",
+              "type": "string"
+            },
+            {
+              "id": "db7b7c16-1306-4bfc-9cf4-639c65125760",
+              "name": "message",
+              "value": "={{ $('validate').first().json.reason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -720,
+        480
+      ],
+      "id": "c55a975e-fb48-418b-94df-c98b1a5cb12d",
+      "name": "result_invalid"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "timeMin": "={{ $('validate').first().json.startISO }}",
+        "timeMax": "={{ $('validate').first().json.endISO }}",
+        "options": {
+          "outputFormat": "availability"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        208
+      ],
+      "id": "c6e22bca-c333-4cb7-a2e3-6347a34e9835",
+      "name": "check_calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bb33a0cf-2996-4e4b-b40e-e0efe08cec7f",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        208
+      ],
+      "id": "34d48be5-fa91-40be-824b-e49c5adfe075",
+      "name": "slot free?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb528afd-fc8a-4f29-bccf-45173963bf47",
+              "name": "status",
+              "value": "SLOT_TAKEN",
+              "type": "string"
+            },
+            {
+              "id": "43308cfa-8350-4cf0-aa2a-fb72d344c9fe",
+              "name": "message",
+              "value": "That time is already booked. Ask the patient to choose another time on that day.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        384
+      ],
+      "id": "d7057bec-3076-4f7c-b249-76aac9dbba59",
+      "name": "result_taken"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a3960c79-dfd0-40d1-a3d0-b6633dcee57b",
+              "leftValue": "={{ $('validate').first().json.mode === 'book' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        112
+      ],
+      "id": "8a1db010-48af-4983-8f1d-5771b46e6117",
+      "name": "is booking?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c43feb2e-55d0-4965-ab47-ca6fca9f46ab",
+              "name": "status",
+              "value": "FREE",
+              "type": "string"
+            },
+            {
+              "id": "c87e5ee5-46db-4324-aabc-44eaa724af2a",
+              "name": "message",
+              "value": "That time is free. Continue: ask for the patient's full name and phone number.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        208
+      ],
+      "id": "ddc4e8b8-fd70-4c42-8c68-0e227a8f61df",
+      "name": "result_free"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "YOUR_CALENDAR_ID",
+          "mode": "list",
+          "cachedResultName": "Bright Smile Clinic"
+        },
+        "start": "={{ $('validate').first().json.startISO }}",
+        "end": "={{ $('validate').first().json.endISO }}",
+        "additionalFields": {
+          "description": "={{ $('validate').first().json.description }}",
+          "summary": "={{ $('validate').first().json.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "18af3d57-59da-4336-a311-a7ba164c866c",
+      "name": "create_event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7dfac6db-9373-46fd-ae6f-b595032fa4b8",
+              "name": "status",
+              "value": "BOOKED",
+              "type": "string"
+            },
+            {
+              "id": "c9ca3155-b2ed-4cce-9333-274370493e58",
+              "name": "message",
+              "value": "={{ 'Appointment created for ' + $('validate').first().json.localLabel }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ],
+      "id": "2ac62519-32f8-4573-9d61-94da290af4cc",
+      "name": "result_booked"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "validate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "validate": {
+      "main": [
+        [
+          {
+            "node": "valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "valid?": {
+      "main": [
+        [
+          {
+            "node": "check_calendar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "result_invalid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_calendar": {
+      "main": [
+        [
+          {
+            "node": "slot free?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "slot free?": {
+      "main": [
+        [
+          {
+            "node": "is booking?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "result_taken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is booking?": {
+      "main": [
+        [
+          {
+            "node": "create_event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "result_free",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_event": {
+      "main": [
+        [
+          {
+            "node": "result_booked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5246ab77-f13b-49e6-8937-467a7ce7521e",
+  "meta": {},
+  "nodeGroups": [],
+  "tags": []
+}

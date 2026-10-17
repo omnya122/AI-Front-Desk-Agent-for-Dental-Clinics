@@ -1,88 +1,145 @@
-# AI Front-Desk Agent for Dental Clinics
+# AI Front-Desk Agent for Dental Clinics (n8n version)
 
-A conversational agent that handles admin enquiries for a (fictional) dental clinic over Telegram, with a hard safety boundary preventing any clinical advice from ever reaching a patient. Built in n8n, backed by RAG over clinic policy documents and structured lookups for pricing/hours/insurance/doctors.
-
-> **Note:** This uses entirely fictional clinic data (fake doctors, fake pricing, fake policies) and was never deployed for a real practice. It's a portfolio project demonstrating an agentic workflow with a safety-critical design constraint.
+A Telegram bot that helps patients of a (fictional) dental clinic. It answers simple questions, books
+appointments in Google Calendar, and never gives medical advice. Medical questions go to a staff member.
 
 ---
 
-## Architecture
+## What the bot can do
+
+- Answer questions about **prices, opening hours, doctors and insurance** (from Google Sheets).
+- Answer questions about **clinic rules, parking, payment and aftercare** (from text documents).
+- **Book an appointment** in Google Calendar.
+- Reply in **English or Arabic**.
+- **Send medical questions to staff**, and save them in an Escalation Log sheet.
+
+---
+
+## How a message flows
 
 ```
-Telegram (user message)
-      │
-      ▼
-   n8n webhook
-      │
-      ▼
- Layer 1: Emergency Check + Clinical Keyword Check (deterministic regex, pre-filter)
-      │  (fails / clinical) ──────────────► Escalation chain (log → notify staff → user reply)
-      ▼ (passes)
-   AI Agent (Gemini) ── tools: search_clinic_docs, get_price, get_hours,
-      │                        get_insurance, get_doctors, check_availability,
-      │                        escalate_to_staff
-      ▼
- Layer 3: Output Safety Check (post-generation, catches anything that slipped through)
-      │  (fails) ──────────────────────────► Escalation chain
-      ▼ (passes)
-   Reply sent to user + turn logged
+Patient message (Telegram)
+      |
+      v
+ Safety check 1: emergency words and medical words (simple rules, before the AI)
+      |  medical -------------------> Fixed reply to patient + alert to staff + log row
+      v  normal
+   AI Agent (Gemini)  -- uses tools: prices, hours, doctors, insurance,
+      |                  clinic documents, check_slot, book_appointment, escalate_to_staff
+      v
+ Safety check 2: look at the AI answer before sending
+      |  unsafe --------------------> Fixed reply to patient + alert to staff + log row
+      v  safe
+   Reply sent to the patient
 ```
 
-Knowledge layer: clinic policy PDFs → chunked → embedded (Google Gemini embeddings) → stored in Supabase/pgvector, retrieved via the `search_clinic_docs` tool. Structured data (pricing, hours, insurance, doctors) lives in Google Sheets and is queried directly rather than embedded — see below for why.
+**Safety checks.** The main rule of this project is: no medical advice, ever.
+1. **Simple rules first.** Words like "pain", "swelling" or "antibiotics" (English and Arabic) stop the message
+   before it reaches the AI.
+2. **The agent can hand over.** If a medical question gets past the rules, the agent can still send it to staff.
+3. **Check the answer.** Before sending, the answer is checked again for medical advice.
+
+All three checks use the same hand-over steps: save a log row, alert staff, and send the patient a polite message.
 
 ---
 
-## The facts-vs-prose split
+## Booking an appointment
 
-Clinic policy documents (what to bring to a first visit, cancellation policy, etc.) go through the vector store, because they're prose that benefits from semantic retrieval — a user might ask the same question ten different ways.
+Booking uses a second workflow (**Book Appointment**) that the agent calls like a tool. The checks are done in
+code, not by the AI, because the AI can make mistakes with dates and times.
 
-Pricing, hours, insurance, and doctor lists are **not** embedded. They're structured, small, and change independently of any "meaning" — embedding them adds retrieval uncertainty (approximate matches, wrong row picked) to data that should be looked up exactly. These are exposed to the Agent as direct lookup tools instead, with a "return everything, let the Agent match loosely" approach, since the Sheets nodes available don't support a native "contains" filter.
-
----
-
-## The three-layer safety gate
-
-This is the core design constraint of the project: **no clinical advice, ever, under any framing.**
-
-1. **Layer 1 — Emergency Check + Clinical Keyword Check** (deterministic regex, before the Agent even runs). Catches obvious symptom/medication/emergency language up front, before any LLM call, so it can't be reasoned around.
-2. **Layer 2 — Agent-level escalation.** The Agent itself carries an `escalate_to_staff` tool and a system prompt instructing it to hand off anything clinical it wasn't caught by Layer 1 — covers edge phrasing the regex misses.
-3. **Layer 3 — Output Safety Check** (post-generation, after the Agent replies). A final check on the Agent's own output before it's sent, catching anything that slipped through generation.
-
-Each layer feeds the same escalation chain: log the event → notify staff → send the user a graceful hand-off message, rather than a raw error.
-
----
-
-## What's built
-
-- Telegram bot wired to n8n, with text/non-text routing and `/start` handling
-- Fictional clinic dataset: Google Sheet (Pricing / Hours / Insurance / Doctors) + policy documents in Drive
-- RAG ingestion pipeline: Drive → chunk → embed (Gemini) → Supabase/pgvector
-- AI Agent (Gemini) with windowed memory keyed on `chat.id`, 8 tools, structured output schema
-- Three-layer clinical safety gate (see above), each layer logging to a shared sheet: `chat_id, question, category, confidence, escalated, tokens, cost`
-- Structured lookup tools tested independently for pricing, hours, insurance, doctors
-
-## Known bugs hit and fixed along the way
-
-- IF-condition routing bug on text/non-text detection (wrong field checked)
-- Vector dimension mismatch (768 vs 3072) between embedding models
-- `.item` vs `.first()` handling breaking chat_id pairing inside the AI Agent node
-- Boolean/string type mismatch and a smart-quote-vs-straight-quote matching bug in the Emergency Check
-- A swapped-fields bug in the Emergency Check condition
+How a booking works:
+1. The patient says they want an appointment. The agent asks for the **day**.
+2. The agent tells the patient the opening hours for that day and asks for a **time**.
+   It does **not** suggest times on its own.
+3. The agent calls `check_slot`. The workflow checks:
+   - the day is not a closed day (Friday),
+   - the whole appointment fits inside the opening hours,
+   - the time is not in the past,
+   - the time is free in Google Calendar.
+4. If the time is free, the agent asks for the **name and phone number**. The phone number must be an Egyptian
+   mobile number (11 digits, starting with 010, 011, 012 or 015). If it is wrong, the workflow refuses it and the
+   agent asks again.
+5. The agent repeats the details and asks the patient to confirm.
+6. After the patient says yes, the agent calls `book_appointment`. The workflow checks everything again and then
+   creates the event in Google Calendar.
+7. The agent only says "booked" when the workflow answers `BOOKED`. If the answer is `SLOT_TAKEN` or `INVALID`,
+   the agent explains and asks for another time.
 
 ---
 
-## Cut for v1 / planned
+## Where the data lives
 
-- Appointment booking (Google Calendar integration, inline-keyboard slot selection, idempotency handling)
-- Reschedule / cancel flows
-- Payments
-- Multi-clinic support
-- Staff dashboard
-- Per-user rate limiting
-- Workflow-level error handling / retry policies
+- **Prices, hours, doctors, insurance:** Google Sheets. These are small tables. This gives exact answers.
+- **Clinic documents** (rules, parking, payment, aftercare): split into small pieces, turned into vectors with
+  Gemini embeddings, and stored in Supabase. The agent searches them with `search_clinic_docs`.
+- **Escalation Log:** a Google Sheet with one row for every message sent to staff.
+
+---
+
+## Files in this folder
+
+| Folder or file | What it is |
+|---|---|
+| `workflows/Dental_Clinic_Agent.json` | Main workflow (Telegram, safety checks, AI agent, replies) |
+| `workflows/Book Appointment.json` | Booking workflow (checks the time and phone, creates the calendar event) |
+| `workflows/Clinic_Knowledge_Base_Ingestion.json` | Loads the clinic documents into the vector store |
+| `prompts/system_prompt.md` | The agent instructions |
+| `data/` | Fictional clinic data (CSV and text files) |
+| `database/supabaseSQL.sql` | SQL to create the vector table |
+| `screenshots/` | Workflows desing and some examples |
+
+---
+
+## How I ran it locally
+
+- **Docker:** I ran n8n in a Docker container on my own computer.
+- **ngrok:** Telegram can only send messages to a public HTTPS address. ngrok gives my local n8n a public
+  address. I set it as `WEBHOOK_URL` for n8n, so the Telegram Trigger could register its webhook.
+- If you want to try it yourself, start ngrok first, set `WEBHOOK_URL` to the ngrok address, then start n8n
+  and publish the workflows.
+- The free ngrok address changes each time it restarts. After a restart, update `WEBHOOK_URL` and publish the
+  workflow again.
+
+---
+
+## How to set it up
+
+1. Import the three workflows into n8n.
+2. Create credentials for Telegram, Google (Sheets, Drive and Calendar), Gemini and Supabase.
+3. Run `database/supabaseSQL.sql` in Supabase.
+4. Upload the sheets and documents from `data/` to Google Drive, then run the ingestion workflow once.
+5. In the main workflow, open the `check_slot` and `book_appointment` tool nodes and select the
+   **Book Appointment** workflow.
+6. **Publish both** the main workflow and the booking workflow. n8n will not run a workflow that is not active.
+
+Credentials and IDs are not included in this repo. You must use your own.
+
+---
+
+## Problems I hit and fixed
+
+- The AI offered times that were already taken, or said "booked" without booking. **Fix:** a separate workflow
+  checks the calendar and the opening hours in code, and the agent must wait for its answer.
+- A wrong phone number (for example, 10 or 13 digits) was accepted. **Fix:** the booking workflow checks the number.
+- The AI sometimes returned an empty answer and nothing was sent. **Fix:** turn on Retry On Fail for the agent and
+  send a short fallback message if it still fails.
+- Telegram send nodes failed on a bad connection. **Fix:** Retry On Fail on the send nodes.
+
+---
+
+## What is not included
+
+- Changing or cancelling an appointment (the bot sends these requests to staff).
+- Payments, many clinics, a staff dashboard.
+- Rate limits per user.
+
+For a version with slot buttons, a database, more safety checks and automatic tests, see the
+[LangGraph version](../v2-langgraph).
 
 ---
 
 ## Disclaimer
 
-All clinic data (name, doctors, pricing, policies) is fictional and was created for this project. This system has not been deployed for, or tested against, a real dental practice.
+All clinic data (name, doctors, prices, rules) is fictional and was created for this project. The system has not
+been used or tested in a real dental clinic.

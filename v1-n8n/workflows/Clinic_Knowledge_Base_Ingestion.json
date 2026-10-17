@@ -245,10 +245,8 @@
   },
   "versionId": "e3858285-0f63-481e-af4d-3460592653b6",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "YOUR_N8N_INSTANCE_ID"
+    "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "id": "rm2HSfhJAK9iwfJ8",
   "tags": []
 }
