@@ -43,8 +43,8 @@
       "name": "AI Agent",
       "retryOnFail": true,
       "maxTries": 3,
-      "onError": "continueErrorOutput",
-      "waitBetweenTries": 5000
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -71,7 +71,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{$json.message.chat.id}}-v31",
+        "sessionKey": "={{$json.message.chat.id}}-v32",
         "contextWindowLength": 30
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -138,14 +138,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Pricing",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID "
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "options": {}
       },
@@ -170,17 +170,17 @@
         "toolDescription": "Look up the clinic's opening and closing hours for a given day",
         "documentId": {
           "__rl": true,
-          "value": "YOUR_GOOGLE_SHEET_ID ",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1316474974,
           "mode": "list",
           "cachedResultName": "Hours",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID "
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1316474974"
         },
         "options": {}
       },
@@ -208,14 +208,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID "
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 591991682,
           "mode": "list",
           "cachedResultName": "Doctors",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=591991682"
         },
         "options": {}
       },
@@ -243,14 +243,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1785710007,
           "mode": "list",
           "cachedResultName": "Insurance",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1785710007"
         },
         "options": {}
       },
@@ -360,15 +360,15 @@
       "id": "c206a9c5-3f41-493c-957f-08beb9c3b94b",
       "name": "Agent Reply",
       "webhookId": "ab703edb-b9a2-4876-82ab-ba34d59d813b",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -481,14 +481,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1837969472,
           "mode": "list",
           "cachedResultName": "Escalation Log",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -589,15 +589,15 @@
       "id": "be1ab3de-df10-462f-841e-b0b906f95ba7",
       "name": "apology_message",
       "webhookId": "3c1709de-60c7-4716-bfe3-df36606357e8",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -650,15 +650,15 @@
       "id": "af76697a-8117-4b9b-80c6-742b26829e53",
       "name": "welcome_message",
       "webhookId": "dfd7828c-ef59-485c-b98d-de798f883ee8",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -677,15 +677,15 @@
       "id": "de733ef7-f9bb-47cd-92bb-028316905e69",
       "name": "notify_staff",
       "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -704,15 +704,15 @@
       "id": "7efaff51-66c2-45ee-87e2-d9de0ce53176",
       "name": "notify_staff2",
       "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -731,15 +731,15 @@
       "id": "0b874f3d-76e2-41dc-a6ae-a90e552a0822",
       "name": "reply_user2",
       "webhookId": "1371df54-0ca8-49b2-bdf8-0e507fb6dd26",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -758,15 +758,15 @@
       "id": "af56516a-6086-4e1e-bdf8-4c7d7603f4f4",
       "name": "notify_staff1",
       "webhookId": "87e2531b-1373-4f75-8cf3-fc47eab888f0",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -785,15 +785,15 @@
       "id": "f7a3eaaf-edd9-4ede-9ab0-e6afaefa30a4",
       "name": "reply_user1",
       "webhookId": "1371df54-0ca8-49b2-bdf8-0e507fb6dd26",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -812,15 +812,15 @@
       "id": "ce839bc4-de94-4d41-82e8-c2fbbaad5b2e",
       "name": "send_non_text_warning",
       "webhookId": "1740c2e8-991a-427a-95d0-227a7a303f9d",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -830,14 +830,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1837969472,
           "mode": "list",
           "cachedResultName": "Escalation Log",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -938,15 +938,15 @@
       "id": "7d2a103a-90c5-4463-b98b-11a8dac68e9f",
       "name": "emergency_warning",
       "webhookId": "8bbd5bd7-65b7-40d2-ba62-9f099fa8683a",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
       "credentials": {
         "telegramApi": {
           "id": "YOUR_CREDENTIAL_ID",
           "name": "Telegram account"
         }
       },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 2000
+      "maxTries": 3
     },
     {
       "parameters": {
@@ -1050,14 +1050,14 @@
           "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Clinic Data",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 1837969472,
           "mode": "list",
           "cachedResultName": "Escalation Log",
-          "cachedResultUrl": "YOUR_GOOGLE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=1837969472"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1636,7 +1636,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "bc4409d2-5064-4b3d-bfa0-fb8c3fed9aa2",
+  "versionId": "62691389-4f2f-4f10-a5fc-853420126dd3",
   "meta": {
     "templateCredsSetupCompleted": true
   },
